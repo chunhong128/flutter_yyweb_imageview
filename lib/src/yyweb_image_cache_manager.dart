@@ -113,7 +113,7 @@ class YYWebImageCacheManager {
       file.writeAsBytes(bytes);
       return true;
     } catch(e) {
-      print('exp occour when saveFileToDisk $e');
+      print('exp occour when yyweb_imageview saveFileToDisk $e');
     }
     return false;
   }
@@ -123,14 +123,12 @@ class YYWebImageCacheManager {
       File file = await getFile(fileName, directory: directory);
       bool exist = await file.exists();
       if (exist) {
-        print('loadFileFromDisk success ' + fileName);
         return file.readAsBytesSync();
       } else {
-        print('loadFileFromDisk file not exist ' + fileName);
         return null;
       }
     } catch (e) {
-      print('exp occour when loadFileFromDisk $e');
+      print('exp occour when yyweb_imageview loadFileFromDisk $e');
       return null;
     }
   }
@@ -160,9 +158,9 @@ class YYWebImageCacheManager {
     }) async {
     if (urls != null) {
       urls.forEach((String urlString) async {
-        print('download start ' + urlString);
+        // print('download start ' + urlString);
         await downloadImage(urlString, tryTimes: tryTimes, headers: headers, timeout: timeout, progress: progress, cachePolicy: cachePolicy);
-        print('download end ' + urlString);
+        // print('download end ' + urlString);
       });
     }
   }
@@ -234,11 +232,11 @@ class YYWebImageCacheManager {
       _downloader = null;
       return bytes;
     } catch(e) {
-      print('exp occur: _tryDownloadWithUrl $e');
+      print('exp occur: yyweb_imageview _tryDownloadWithUrl $e');
       shouldRetry = true;
     }
     if (shouldRetry == true && tryCount > 0) {
-      print('_tryDownloadWithUrl download fail with zero bytes');
+      print('yyweb_imageview _tryDownloadWithUrl download fail with zero bytes');
       return _tryDownloadWithUrl(url, tryCount, timeout: timeout, headers: headers, progress: progress);
     }
     return null;

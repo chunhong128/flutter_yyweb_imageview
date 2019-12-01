@@ -37,7 +37,6 @@ class YYWebImageProvider extends ImageProvider <NetworkImage> {
     String encodedUrl = YYWebImageCacheManager.fileNameForUrl(key.url);
     Uint8List localBytes = await loadImageFromDisk(encodedUrl);
     if (localBytes != null && localBytes.length > 0) {
-      print('_loadAsync get from local');
       return PaintingBinding.instance.instantiateImageCodec(localBytes);
     }
     //下载图片
@@ -57,7 +56,6 @@ class YYWebImageProvider extends ImageProvider <NetworkImage> {
   }
 
   Future<Uint8List> loadImageFromDisk(String base64Url) async {
-    print('loadImageFromDisk $base64Url');
     if (base64Url.length == 0) {
       return null;
     }
@@ -65,7 +63,6 @@ class YYWebImageProvider extends ImageProvider <NetworkImage> {
  }
 
   Future<void> saveImageToDisk(Uint8List bytes, String base64Url) async {
-    print('saveImageToDisk $base64Url');
     if (base64Url.length == 0) {
       return;
     }
