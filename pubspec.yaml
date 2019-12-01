@@ -1,8 +1,8 @@
 name: yyweb_imageview
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
+author: wangchunhong <wangchunhong@yy.com>
+homepage: https://github.com/chunhong128/flutter_yyweb_imageview
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

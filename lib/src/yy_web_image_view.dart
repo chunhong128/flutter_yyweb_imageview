@@ -17,6 +17,7 @@ class YYWebImageView extends StatefulWidget {
   final double scale;
   final Widget placeHolder;
   final Widget errorWidget;
+  final Color backgroundColor;
   final DWImageDownloadProgress progressCallback;
   final DWImageBeforeCacheCallback beforeCache;
   final DWImageFinshCallback finishCallback;
@@ -28,6 +29,7 @@ class YYWebImageView extends StatefulWidget {
       this.height,
       this.fit = BoxFit.contain,
       this.scale = 1.0, 
+      this.backgroundColor,
       this.finishCallback, 
       this.progressCallback, 
       this.beforeCache, 
@@ -90,7 +92,7 @@ class _YYWebImageViewState extends State<YYWebImageView> {
 
   @override
     void reassemble() {
-      print('======= reassemble ' + widget.url);
+      // print('======= reassemble ' + widget.url);
       super.reassemble();
       _loadImage();
     }
@@ -122,7 +124,7 @@ class _YYWebImageViewState extends State<YYWebImageView> {
       widget.progressCallback(event.cumulativeBytesLoaded, event.expectedTotalBytes);
     }
     downloadProgress = event.cumulativeBytesLoaded / event.expectedTotalBytes;
-    print('YYWebImageView ===== progress:${ event.cumulativeBytesLoaded/event.expectedTotalBytes}');
+    // print('YYWebImageView ===== progress:${ event.cumulativeBytesLoaded/event.expectedTotalBytes}');
   }
 
   void _onError(dynamic exception, StackTrace stackTrace) {
@@ -138,7 +140,7 @@ class _YYWebImageViewState extends State<YYWebImageView> {
   }
 
   void cancelLoad() {
-    print('YYWebImageView cancelLoad: ' + widget.url);
+    // print('YYWebImageView cancelLoad: ' + widget.url);
     if (_imageStream != null) {
       final ImageStreamListener listener = ImageStreamListener(_onImage, onChunk: _onChunk, onError: _onError);
       _imageStream.removeListener(listener);
@@ -148,16 +150,23 @@ class _YYWebImageViewState extends State<YYWebImageView> {
 
   @override
     Widget build(BuildContext context) {
+      Widget currentWidget;
       if (_imageInfo != null) {
-        return RawImage(
+        currentWidget = RawImage(
           image: _imageInfo.image,
           scale: _imageInfo.scale ?? 1.0,
           width: widget.width,
           height: widget.height,
           fit: widget.fit,
         );
+        if (widget.backgroundColor != null) {
+          return DecoratedBox(
+            decoration: BoxDecoration(color: widget.backgroundColor),
+            child: currentWidget,
+          );
+        }
+        return currentWidget;
       }
-      Widget currentWidget;
       if (hasErrorOccur) {
         if (widget.errorWidget != null) {
           currentWidget = widget.errorWidget;
@@ -179,13 +188,14 @@ class _YYWebImageViewState extends State<YYWebImageView> {
         );
       }
       if (widget.width != null && widget.height != null) {
-          currentWidget = SizedBox(
+          currentWidget = Container (
             width: widget.width,
             height: widget.height,
             child: Align(
               alignment: Alignment.center,
               child: currentWidget,
             ),
+            color: widget.backgroundColor,
           ); 
         }
       return currentWidget;
